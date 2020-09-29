@@ -5,6 +5,7 @@ import com.ola.cabbooking.entities.RiderEntity;
 import com.ola.cabbooking.model.request.RiderDetailsRequestModel;
 import com.ola.cabbooking.model.response.RiderResponse;
 import com.ola.cabbooking.service.RiderService;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -21,14 +22,17 @@ public class RiderController {
     RiderService riderService;
 
     @PostMapping("/rider")
-    public RiderResponse registerRider(@RequestBody RiderDetailsRequestModel rider) {
-        RiderDto riderDto = new RiderDto();
+    public RiderResponse registerRider(@RequestBody RiderDetailsRequestModel riderDetails) {
+
         RiderResponse riderResponse = new RiderResponse();
 
-        BeanUtils.copyProperties(rider, riderDto);
+        //BeanUtils.copyProperties(rider, riderDto);
+        ModelMapper mapper = new ModelMapper();
+        RiderDto riderDto = mapper.map(riderDetails, RiderDto.class);
         RiderDto createdRider = riderService.createRider(riderDto);
 
         BeanUtils.copyProperties(createdRider, riderResponse);
+
         return riderResponse;
     }
 

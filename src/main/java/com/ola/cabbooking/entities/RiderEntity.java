@@ -4,18 +4,20 @@ import lombok.*;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.List;
 
 
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-public class RiderEntity extends BaseAbstractEntity {
-//    @Id
-//    @GeneratedValue
-//    Long ID;
+public class RiderEntity {//extends BaseAbstractEntity {
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = "rider_id")
+    Long id;
 
-    @Column(nullable=false)
+    @Column(nullable = false)
     private String userId;
 
     @Column(nullable = false)
@@ -29,13 +31,18 @@ public class RiderEntity extends BaseAbstractEntity {
     @Column(nullable = false)
     private String password;
 
-    @Column(nullable=false)
+    @Column(nullable = false)
     private String encryptedPassword;
 
     private String emailVerificationToken;
 
-    @Column(nullable=false)
+    @Column(nullable = false)
     private Boolean emailVerificationStatus = false;
+
+//    @OneToMany(cascade = CascadeType.ALL)
+//    @JoinColumn(name = "rider_id", referencedColumnName = "rider_id")
+    @OneToMany(targetEntity = AddressEntity.class, cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<AddressEntity> addresses;
 
     public String getEncryptedPassword() {
         return encryptedPassword;
@@ -108,4 +115,14 @@ public class RiderEntity extends BaseAbstractEntity {
     public void setEmail(String email) {
         this.email = email;
     }
+
+    public List<AddressEntity> getAddresses() {
+        return addresses;
+    }
+
+    public void setAddresses(List<AddressEntity> addresses) {
+        this.addresses = addresses;
+    }
+
 }
+
