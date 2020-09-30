@@ -23,13 +23,20 @@ public class WebSecurity extends WebSecurityConfigurerAdapter {
                 .csrf().disable().authorizeRequests()
                 .antMatchers(HttpMethod.POST, "/rider")
                 .permitAll()
-                .antMatchers(HttpMethod.POST, "/cab")
+                .antMatchers(HttpMethod.GET, "/rider")
                 .permitAll()
-                .anyRequest().authenticated().and().addFilter(new AuthenticationFilter(authenticationManager()));
+                .anyRequest().authenticated().and().addFilter(getAuthenticationFilter())
+                .addFilter(new AuthorizationFilter(authenticationManager()));
     }
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
         auth.userDetailsService(userDetailsService).passwordEncoder(bCryptPasswordEncoder);
+    }
+
+    protected AuthenticationFilter getAuthenticationFilter() throws Exception {
+        final AuthenticationFilter filter = new AuthenticationFilter(authenticationManager());
+        filter.setFilterProcessesUrl("/rider/login");
+        return filter;
     }
 }

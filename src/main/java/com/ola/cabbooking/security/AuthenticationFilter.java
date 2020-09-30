@@ -1,6 +1,7 @@
 package com.ola.cabbooking.security;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.ola.cabbooking.SpringApplicationContext;
 import com.ola.cabbooking.dto.RiderDto;
 import com.ola.cabbooking.model.request.LoginRequestModel;
 import com.ola.cabbooking.service.RiderService;
@@ -51,6 +52,7 @@ public class AuthenticationFilter extends UsernamePasswordAuthenticationFilter {
             throw new RuntimeException(e);
         }
     }
+
     @Override
     protected void successfulAuthentication(HttpServletRequest req,
                                             HttpServletResponse res,
@@ -64,11 +66,11 @@ public class AuthenticationFilter extends UsernamePasswordAuthenticationFilter {
                 .setExpiration(new Date(System.currentTimeMillis() + SecurityConstants.EXPIRATION_TIME))
                 .signWith(SignatureAlgorithm.HS512, SecurityConstants.TOKEN_SECRET)
                 .compact();
-        //RiderService userService = (RiderService)SpringApplicationContext.getBean("userServiceImpl");
-        //RiderDto userDto = userService.getR(userName);
+        RiderService userService = (RiderService) SpringApplicationContext.getBean("riderServiceImpl");
+        RiderDto userDto = userService.getUser(userName);
 
         res.addHeader(SecurityConstants.HEADER_STRING, SecurityConstants.TOKEN_PREFIX + token);
-        //res.addHeader("UserID", userDto.getUserId());
+        res.addHeader("UserID", userDto.getUserId());
 
     }
 }

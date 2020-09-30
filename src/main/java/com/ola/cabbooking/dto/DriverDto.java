@@ -1,6 +1,7 @@
 package com.ola.cabbooking.dto;
 
 import com.ola.cabbooking.entities.BaseAbstractEntity;
+import com.ola.cabbooking.model.Location;
 import lombok.*;
 
 import javax.persistence.Entity;
@@ -18,4 +19,5 @@ public class DriverDto implements Serializable {
     String licenseNumber;
     String VehicleType;
     Boolean isAvailable;
+    Location location;
 }

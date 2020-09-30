@@ -53,4 +53,30 @@ public class RiderServiceImpl implements RiderService {
         if (riderEntity.getEmail().isEmpty()) throw new UsernameNotFoundException(email);
         return new User(riderEntity.getEmail(), riderEntity.getEncryptedPassword(), new ArrayList<>());
     }
+
+    @Override
+    public RiderDto getUser(String email) {
+        RiderEntity userEntity = riderRepository.findByEmail(email);
+
+        if (userEntity == null)
+            throw new UsernameNotFoundException(email);
+
+        RiderDto returnValue = new RiderDto();
+        BeanUtils.copyProperties(userEntity, returnValue);
+
+        return returnValue;
+    }
+
+    @Override
+    public RiderDto getUserByUserId(String id) {
+        RiderEntity userEntity = riderRepository.findByUserId(id);
+
+        if (userEntity == null)
+            throw new UsernameNotFoundException(id);
+
+        RiderDto returnValue = new RiderDto();
+        BeanUtils.copyProperties(userEntity, returnValue);
+
+        return returnValue;
+    }
 }

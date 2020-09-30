@@ -9,10 +9,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @Component
@@ -36,8 +33,13 @@ public class RiderController {
         return riderResponse;
     }
 
-    @GetMapping("/rider")
-    public RiderEntity user() {
-        return new RiderEntity();
+    @GetMapping("/rider/{id}")
+    public RiderResponse user(@PathVariable String id) {
+        RiderResponse riderResponse = new RiderResponse();
+
+        RiderDto createdRider = riderService.getUserByUserId(id);
+
+        BeanUtils.copyProperties(createdRider, riderResponse);
+        return riderResponse;
     }
 }

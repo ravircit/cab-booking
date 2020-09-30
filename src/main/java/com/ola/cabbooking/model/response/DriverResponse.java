@@ -1,5 +1,6 @@
 package com.ola.cabbooking.model.response;
 
+import com.ola.cabbooking.model.Location;
 import lombok.*;
 
 @AllArgsConstructor
@@ -13,4 +14,5 @@ public class DriverResponse {
     String licenseNumber;
     String VehicleType;
     Boolean isAvailable;
+    Location location;
 }

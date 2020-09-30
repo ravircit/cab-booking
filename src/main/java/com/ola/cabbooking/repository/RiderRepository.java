@@ -8,4 +8,5 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface RiderRepository extends CrudRepository<RiderEntity, Integer> {
  RiderEntity findByEmail(String email);
+ RiderEntity findByUserId(String Id);
 }
